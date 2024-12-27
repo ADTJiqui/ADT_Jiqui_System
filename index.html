@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Información del Mototaxi</title>
+    <style>
+        /* Estilo general */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('logo.png'); /* Ruta de la imagen de fondo */
+            background-size: 100% 100%; /* Ajusta al tamaño de la ventana */
+            background-position: center center; /* Centra la imagen */
+            background-repeat: no-repeat; /* Evita que se repita */
+            background-attachment: fixed; /* Fija la imagen al fondo */
+        }
+
+        /* Contenedor principal */
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9); /* Fondo blanco semitransparente */
+            border-radius: 10px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5); /* Sombra más visible */
+            border: 2px solid #ffcc00; /* Borde dorado para resaltar */
+            color: #333; /* Color de texto oscuro */
+        }
+
+        /* Título */
+        h1 {
+            text-align: center;
+            color: #0056b3; /* Azul oscuro */
+            margin-bottom: 20px;
+        }
+
+        /* Información del mototaxi */
+        .info {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .info p {
+            margin: 10px 0;
+        }
+
+        .info p strong {
+            color: #ff6600; /* Naranja para destacar */
+        }
+
+        /* Mensaje de error */
+        .error {
+            color: #ff3333; /* Rojo brillante */
+            font-weight: bold;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555; /* Gris oscuro */
+        }
+
+        /* Botón volver (opcional) */
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #0056b3;
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #0077e6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Información del Mototaxi</h1>
+        <div id="info" class="info">
+            Cargando información...
+        </div>
+        <footer>
+            © 2024 Sistema de Mototaxis
+        </footer>
+    </div>
+
+    <script>
+        // Obtener el ID del QR desde la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id');
+
+        // Cargar los datos del archivo JSON
+        fetch("mototaxis.json")
+            .then(response => response.json())
+            .then(data => {
+                const mototaxi = data[id];
+                const infoDiv = document.getElementById("info");
+
+                if (mototaxi) {
+                    infoDiv.innerHTML = `
+                        <p><strong>Grupo:</strong> ${mototaxi.grupo}</p>
+                        <p><strong>Número de Mototaxi:</strong> ${mototaxi.numero_mototaxi}</p>
+                        <p><strong>Quejas y Reclamos:</strong> ${mototaxi.quejas_reclamos}</p>
+                    `;
+                } else {
+                    infoDiv.innerHTML = `<p class="error">No se encontró información para este ID.</p>`;
+                }
+            })
+            .catch(error => {
+                console.error("Error al cargar los datos:", error);
+                document.getElementById("info").innerHTML = `<p class="error">Error al cargar la información.</p>`;
+            });
+    </script>
+</body>
+</html>
